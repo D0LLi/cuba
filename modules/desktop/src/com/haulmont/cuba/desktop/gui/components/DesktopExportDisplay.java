@@ -30,6 +30,7 @@ import com.haulmont.cuba.gui.export.ExportDataProvider;
 import com.haulmont.cuba.gui.export.ExportDisplay;
 import com.haulmont.cuba.gui.export.ExportFormat;
 import com.haulmont.cuba.gui.export.FileDataProvider;
+import java.nio.file.Files;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -129,7 +130,7 @@ public class DesktopExportDisplay implements ExportDisplay {
     private void openFileAction(String finalFileName, ExportDataProvider dataProvider) {
         File destFile = null;
         try {
-            destFile = File.createTempFile("get_" + FilenameUtils.getBaseName(finalFileName), "." + getFileExt(finalFileName));
+            destFile = Files.createTempFile("get_" + FilenameUtils.getBaseName(finalFileName), "." + getFileExt(finalFileName)).toFile();
         } catch (IOException e) {
             String message = messages.getMessage(DesktopExportDisplay.class, "export.tempFileError");
             getFrame().getWindowManager().showNotification(message, Frame.NotificationType.WARNING);
