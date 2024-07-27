@@ -42,6 +42,7 @@ import com.haulmont.cuba.gui.data.impl.DsContextImplementation;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.screen.compatibility.LegacyFrame;
 import com.haulmont.cuba.security.entity.FilterEntity;
+import java.security.SecureRandom;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.DocumentHelper;
@@ -353,7 +354,7 @@ public class RelatedEntitiesBean implements RelatedEntitiesAPI {
         condition.setHidden(true);
         condition.setInExpr(true);
 
-        int randInt = new Random().nextInt((99999 - 11111) + 1) + 11111;
+        int randInt = new SecureRandom().nextInt((99999 - 11111) + 1) + 11111;
         String paramName = String.format("component$%s.%s%s", filterComponentName, conditionName, randInt);
 
         condition.setParam(getParentEntitiesParam(parentIds, parentPrimaryKey, metaClass,
