@@ -28,6 +28,7 @@ import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.entity.UserSessionEntity;
 import com.haulmont.cuba.security.global.NoUserSessionException;
 import com.haulmont.cuba.security.global.UserSession;
+import io.github.pixee.security.ObjectInputFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -177,6 +178,7 @@ public class UserSessions implements UserSessionsAPI {
         ByteArrayInputStream bis = new ByteArrayInputStream(state);
         try {
             ObjectInputStream ois = new ObjectInputStream(bis);
+            ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
             int size = ois.readInt();
             for (int i = 0; i < size; i++) {
                 UserSessionInfo usi = (UserSessionInfo) ois.readObject();
