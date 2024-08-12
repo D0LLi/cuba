@@ -20,6 +20,7 @@ import com.haulmont.cuba.core.entity.ScreenProfilerEvent;
 import com.haulmont.cuba.core.global.Configuration;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.core.global.ScreenProfilerConfig;
+import io.github.pixee.security.ObjectInputFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -235,6 +236,7 @@ public class ScreenProfilerServiceBean implements ScreenProfilerService {
             ByteArrayInputStream bis = new ByteArrayInputStream(state);
             try {
                 ObjectInputStream ois = new ObjectInputStream(bis);
+                ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
                 int size = ois.readInt();
                 for (int i = 0; i < size; i++) {
                     ProfilerEventData eventData = (ProfilerEventData) ois.readObject();
@@ -275,6 +277,7 @@ public class ScreenProfilerServiceBean implements ScreenProfilerService {
             ByteArrayInputStream bis = new ByteArrayInputStream(state);
             try {
                 ObjectInputStream ois = new ObjectInputStream(bis);
+                ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
                 ProfilingConfigurationMsg msg = (ProfilingConfigurationMsg) ois.readObject();
                 receive(msg);
             } catch (IOException | ClassNotFoundException e) {
