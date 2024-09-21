@@ -28,6 +28,7 @@ import com.haulmont.cuba.core.sys.SecurityContext;
 import com.haulmont.cuba.security.app.UserSessionService;
 import com.haulmont.cuba.security.global.NoUserSessionException;
 import com.haulmont.cuba.security.global.UserSession;
+import io.github.pixee.security.Newlines;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
@@ -95,12 +96,12 @@ public class FileDownloadController {
 
             response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache");
             response.setDateHeader(HttpHeaders.EXPIRES, 0);
-            response.setHeader(HttpHeaders.CONTENT_TYPE, getContentType(fd));
+            response.setHeader(HttpHeaders.CONTENT_TYPE, Newlines.stripAll(getContentType(fd)));
             response.setHeader(HttpHeaders.PRAGMA, "no-cache");
 
             boolean attach = Boolean.valueOf(request.getParameter("a"));
-            response.setHeader("Content-Disposition", (attach ? "attachment" : "inline")
-                    + "; filename=" + fileName);
+            response.setHeader("Content-Disposition", Newlines.stripAll((attach ? "attachment" : "inline")
+                    + "; filename=" + fileName));
 
             downloadFromMiddlewareAndWriteResponse(fd, response);
         } finally {

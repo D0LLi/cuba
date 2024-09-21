@@ -22,6 +22,7 @@ import com.haulmont.cuba.core.sys.logging.LogArchiver;
 import com.haulmont.cuba.core.sys.logging.LogFileNotFoundException;
 import com.haulmont.cuba.security.app.UserSessionsAPI;
 import com.haulmont.cuba.security.global.UserSession;
+import io.github.pixee.security.Newlines;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -77,7 +78,7 @@ public class LogDownloadController {
             response.setHeader("Content-Type", "application/zip");
             response.setHeader("Pragma", "no-cache");
 
-            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+            response.setHeader("Content-Disposition", Newlines.stripAll("attachment; filename=" + filename));
 
             OutputStream outputStream = null;
             try {
