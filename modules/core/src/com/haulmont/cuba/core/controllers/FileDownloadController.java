@@ -27,6 +27,7 @@ import com.haulmont.cuba.core.sys.AppContext;
 import com.haulmont.cuba.core.sys.SecurityContext;
 import com.haulmont.cuba.security.app.UserSessionsAPI;
 import com.haulmont.cuba.security.global.UserSession;
+import io.github.pixee.security.Newlines;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -83,7 +84,7 @@ public class FileDownloadController {
             response.setHeader("Cache-Control", "no-cache");
             response.setHeader("Pragma", "no-cache");
             response.setIntHeader("Expires", -1);
-            response.setHeader("Content-Type", FileTypesHelper.DEFAULT_MIME_TYPE);
+            response.setHeader("Content-Type", Newlines.stripAll(FileTypesHelper.DEFAULT_MIME_TYPE));
 
             InputStream is = null;
             ServletOutputStream os = null;
