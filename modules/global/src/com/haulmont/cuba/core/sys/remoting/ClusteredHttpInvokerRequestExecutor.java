@@ -21,6 +21,8 @@ import com.google.common.io.CountingInputStream;
 import com.haulmont.cuba.core.sys.AppContext;
 import com.haulmont.cuba.core.sys.remoting.discovery.ServerSelector;
 import com.haulmont.cuba.core.sys.serialization.SerializationSupport;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
@@ -114,7 +116,7 @@ public class ClusteredHttpInvokerRequestExecutor extends SimpleHttpInvokerReques
     }
 
     protected HttpURLConnection openConnection(String serviceUrl) throws IOException {
-        URLConnection con = new URL(serviceUrl).openConnection();
+        URLConnection con = Urls.create(serviceUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).openConnection();
         if (!(con instanceof HttpURLConnection)) {
             throw new IOException(String.format("Service URL [%s] is not an HTTP URL", serviceUrl));
         }

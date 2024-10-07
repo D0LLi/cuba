@@ -23,6 +23,8 @@ import com.vaadin.server.ResourceReference;
 import com.vaadin.shared.communication.URLReference;
 import com.vaadin.ui.renderers.ClickableRenderer;
 import elemental.json.JsonValue;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,7 +55,7 @@ public class CubaImageRenderer<T> extends ClickableRenderer<T, String> {
 
             if (value.startsWith("http") || value.startsWith("https")) {
                 try {
-                    resource = new ExternalResource(new URL(value));
+                    resource = new ExternalResource(Urls.create(value, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
                 } catch (MalformedURLException e) {
                     throw new RuntimeException("Unable to parse url for value", e);
                 }

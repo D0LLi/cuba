@@ -30,6 +30,8 @@ import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceConnector;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.pool2.BaseKeyedPooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
@@ -376,7 +378,7 @@ public abstract class AbstractScripting implements Scripting {
                 if (resourceName.startsWith("file:") && resourceName.contains(".jar!"))
                     resourceName = "jar:" + resourceName;
 
-                URL resourceUrl = new URL(resourceName);
+                URL resourceUrl = Urls.create(resourceName, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 groovyScriptConn = resourceUrl.openConnection();
                 // Make sure we can open it, if we can't it doesn't exist.
                 groovyScriptConn.getInputStream();

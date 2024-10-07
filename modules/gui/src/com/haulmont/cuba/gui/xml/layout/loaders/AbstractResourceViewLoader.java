@@ -18,6 +18,8 @@ package com.haulmont.cuba.gui.xml.layout.loaders;
 
 import com.haulmont.cuba.gui.GuiDevelopmentException;
 import com.haulmont.cuba.gui.components.*;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 
@@ -97,7 +99,7 @@ public abstract class AbstractResourceViewLoader<T extends ResourceView> extends
 
         UrlResource resource = resultComponent.createResource(UrlResource.class);
         try {
-            resource.setUrl(new URL(url));
+            resource.setUrl(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
 
             loadMimeType(resource, urlResource);
 

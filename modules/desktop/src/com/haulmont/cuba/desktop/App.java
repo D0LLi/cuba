@@ -44,6 +44,8 @@ import com.haulmont.cuba.gui.theme.ThemeConstantsRepository;
 import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.global.LoginException;
 import com.haulmont.cuba.security.global.UserSession;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
@@ -523,7 +525,7 @@ public class App implements ConnectionListener {
 
     protected String getUserFriendlyConnectionUrl(String urlString) {
         try {
-            URL url = new URL(urlString);
+            URL url = Urls.create(urlString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             return url.getHost() + (url.getPort() == -1 ? "" : ":" + url.getPort());
         } catch (MalformedURLException e) {
             return urlString;
