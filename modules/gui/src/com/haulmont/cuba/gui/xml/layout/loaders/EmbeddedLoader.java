@@ -19,6 +19,8 @@ package com.haulmont.cuba.gui.xml.layout.loaders;
 
 import com.haulmont.cuba.gui.GuiDevelopmentException;
 import com.haulmont.cuba.gui.components.Embedded;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.MalformedURLException;
@@ -54,7 +56,7 @@ public class EmbeddedLoader extends AbstractComponentLoader<Embedded> {
 
                 URL targetUrl;
                 try {
-                    targetUrl = new URL(src);
+                    targetUrl = Urls.create(src, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 } catch (MalformedURLException e) {
                     throw new GuiDevelopmentException("Incorrect URL in Embedded src attribute",
                             context, "src", srcAttr);

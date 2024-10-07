@@ -19,6 +19,8 @@ package com.haulmont.cuba.desktop.gui.components;
 
 import com.haulmont.cuba.gui.components.Embedded;
 import com.haulmont.cuba.gui.export.ExportDataProvider;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -73,7 +75,7 @@ public class DesktopEmbedded extends DesktopAbstractComponent<JPanel> implements
             // the same as in WebEmbedded
             if (src.startsWith("http") || src.startsWith("https")) {
                 try {
-                    setSource(new URL(src));
+                    setSource(Urls.create(src, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }

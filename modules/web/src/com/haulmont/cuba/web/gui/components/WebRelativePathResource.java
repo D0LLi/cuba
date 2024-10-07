@@ -20,6 +20,8 @@ import com.haulmont.bali.util.Preconditions;
 import com.haulmont.cuba.gui.components.RelativePathResource;
 import com.haulmont.cuba.web.controllers.ControllerUtils;
 import com.vaadin.server.ExternalResource;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,8 +52,8 @@ public class WebRelativePathResource extends WebAbstractResource implements WebR
     @Override
     protected void createResource() {
         try {
-            URL context = new URL(ControllerUtils.getLocationWithoutParams());
-            resource = new ExternalResource(new URL(context, path));
+            URL context = Urls.create(ControllerUtils.getLocationWithoutParams(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
+            resource = new ExternalResource(Urls.create(context, path, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         } catch (MalformedURLException e) {
             throw new RuntimeException("Can't create RelativePathResource", e);
         }

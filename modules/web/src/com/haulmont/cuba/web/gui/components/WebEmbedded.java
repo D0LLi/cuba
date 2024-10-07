@@ -24,6 +24,8 @@ import com.haulmont.cuba.gui.export.ExportDataProvider;
 import com.haulmont.cuba.web.WebConfig;
 import com.haulmont.cuba.web.controllers.ControllerUtils;
 import com.vaadin.server.*;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +69,7 @@ public class WebEmbedded extends WebAbstractComponent<com.vaadin.ui.Embedded> im
         if (src != null) {
             if (src.startsWith("http") || src.startsWith("https")) {
                 try {
-                    setSource(new URL(src));
+                    setSource(Urls.create(src, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
                 } catch (MalformedURLException e) {
                     throw new RuntimeException("Unable to parse url for embedded source", e);
                 }
@@ -131,8 +133,8 @@ public class WebEmbedded extends WebAbstractComponent<com.vaadin.ui.Embedded> im
     public void setRelativeSource(String src) {
         if (src != null) {
             try {
-                URL context = new URL(ControllerUtils.getLocationWithoutParams());
-                resource = new ExternalResource(new URL(context, src));
+                URL context = Urls.create(ControllerUtils.getLocationWithoutParams(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
+                resource = new ExternalResource(Urls.create(context, src, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
                 component.setSource(resource);
                 setType(Type.BROWSER);
             } catch (MalformedURLException e) {

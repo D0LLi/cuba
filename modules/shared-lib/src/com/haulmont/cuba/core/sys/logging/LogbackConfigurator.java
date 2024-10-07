@@ -26,6 +26,8 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.util.Loader;
 import ch.qos.logback.core.util.OptionHelper;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +91,7 @@ public class LogbackConfigurator extends ContextAwareBase implements Configurato
             String logbackConfigFile = appHome + "/logback.xml";
             URL result = null;
             try {
-                result = new URL(logbackConfigFile);
+                result = Urls.create(logbackConfigFile, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 return result;
             } catch (MalformedURLException e) {
                 // so, resource is not a URL:
