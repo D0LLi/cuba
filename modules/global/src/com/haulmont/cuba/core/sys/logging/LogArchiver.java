@@ -17,6 +17,7 @@
 
 package com.haulmont.cuba.core.sys.logging;
 
+import java.nio.file.Files;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -60,7 +61,7 @@ public class LogArchiver {
             throw new FileNotFoundException();
         }
 
-        File tempFile = File.createTempFile(FilenameUtils.getBaseName(logFile.getName()) + "_log_", ".zip");
+        File tempFile = Files.createTempFile(FilenameUtils.getBaseName(logFile.getName()) + "_log_", ".zip").toFile();
 
         ZipArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(tempFile);
         zipOutputStream.setMethod(ZipArchiveOutputStream.DEFLATED);
