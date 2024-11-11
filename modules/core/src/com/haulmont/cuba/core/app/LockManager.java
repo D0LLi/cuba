@@ -25,6 +25,7 @@ import com.haulmont.cuba.core.TypedQuery;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.entity.LockDescriptor;
 import com.haulmont.cuba.core.global.*;
+import io.github.pixee.security.ObjectInputFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -259,6 +260,7 @@ public class LockManager implements LockManagerAPI, ClusterListener<LockInfo> {
         ByteArrayInputStream bis = new ByteArrayInputStream(state);
         try {
             ObjectInputStream ois = new ObjectInputStream(bis);
+            ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
             list = (List<LockInfo>) ois.readObject();
         } catch (Exception e) {
             log.error("Error deserializing LockInfo list", e);
