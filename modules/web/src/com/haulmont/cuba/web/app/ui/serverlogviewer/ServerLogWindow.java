@@ -45,6 +45,7 @@ import com.haulmont.cuba.web.widgets.CubaScrollBoxLayout;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutAction.ModifierKey;
 import com.vaadin.ui.ComboBox;
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -291,7 +292,7 @@ public class ServerLogWindow extends AbstractWindow {
             BufferedReader reader = new BufferedReader(new StringReader(value));
             try {
                 String line;
-                while ((line = reader.readLine()) != null) {
+                while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                     // replace one level per line
                     for (String level : logLevels) {
                         String highlightedLine = highlightLevel(line, level);
